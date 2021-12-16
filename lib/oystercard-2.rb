@@ -26,6 +26,7 @@ class Oystercard
   end
 
   def touch_out
+    deduct(BALANCE_MINIMUM)
     @touch_in = false
   end
 end

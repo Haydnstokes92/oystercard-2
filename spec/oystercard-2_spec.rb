@@ -34,5 +34,9 @@ describe Oystercard do
     it "raises an error when touch_in is called and there is below minimum balance" do
       expect { subject.touch_in }.to raise_error "the balance is too low"
     end
+
+    it 'deductes minium far when touch_out is called' do
+      expect { subject.touch_out }.to change{ subject.balance }.by(-1)
+    end
   end
 end
