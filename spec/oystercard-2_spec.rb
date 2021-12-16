@@ -22,12 +22,17 @@ describe Oystercard do
       expect(subject).not_to be_in_journey
     end
     it "can touch in" do
+      subject.top_up(10)
       subject.touch_in
       expect(subject).to be_in_journey
     end
     it "can touch out" do
       subject.touch_out
       expect(subject).not_to be_in_journey
+    end
+
+    it "raises an error when touch_in is called and there is below minimum balance" do
+      expect { subject.touch_in }.to raise_error "the balance is too low"
     end
   end
 end
