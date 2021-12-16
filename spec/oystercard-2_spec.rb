@@ -27,7 +27,7 @@ describe Oystercard do
       expect(subject).to be_in_journey
     end
     it "can touch out" do
-      subject.touch_out
+      subject.touch_out(station)
       expect(subject).not_to be_in_journey
     end
 
@@ -36,7 +36,7 @@ describe Oystercard do
     end
 
     it 'deductes minium far when touch_out is called' do
-      expect { subject.touch_out }.to change{ subject.balance }.by(-1)
+      expect { subject.touch_out(station) }.to change{ subject.balance }.by(-1)
     end
     
     let(:station){ double :station }
@@ -45,6 +45,18 @@ describe Oystercard do
       subject.top_up(10)
       subject.touch_in(station)
       expect(subject.station_entry).to eq station
+    end
+
+    it 'starts with an empty list of journeys' do
+      expect(subject.journeys).to be_empty
+    end
+
+    it 'tests that touching in and touching out creates one journey' do
+      subject.top_up(10)
+      subject.touch_in(station)
+      subject.touch_out(station)
+      journey = { station => station }
+      expect(subject.journeys).to include(journey)
     end
   end
 end
