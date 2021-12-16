@@ -23,7 +23,7 @@ describe Oystercard do
     end
     it "can touch in" do
       subject.top_up(10)
-      subject.touch_in
+      subject.touch_in(station)
       expect(subject).to be_in_journey
     end
     it "can touch out" do
@@ -32,11 +32,19 @@ describe Oystercard do
     end
 
     it "raises an error when touch_in is called and there is below minimum balance" do
-      expect { subject.touch_in }.to raise_error "the balance is too low"
+      expect { subject.touch_in(station) }.to raise_error "the balance is too low"
     end
 
     it 'deductes minium far when touch_out is called' do
       expect { subject.touch_out }.to change{ subject.balance }.by(-1)
+    end
+    
+    let(:station){ double :station }
+    
+    it 'stores station name' do
+      subject.top_up(10)
+      subject.touch_in(station)
+      expect(subject.station_entry).to eq station
     end
   end
 end
